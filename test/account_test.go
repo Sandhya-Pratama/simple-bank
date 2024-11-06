@@ -89,15 +89,18 @@ func TestUpdateAccount(t *testing.T) {
 // test delete account
 func TestDeleteAccount(t *testing.T) {
 	account1 := createRandomAccount(t)
-	err := testQueries.DeleteAccount(context.Background(), account1.ID)
 
+	// Hapus akun
+	err := testQueries.DeleteAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
 
+	// Coba dapatkan akun yang dihapus
 	account2, err := testQueries.GetAccount(context.Background(), account1.ID)
-	require.Error(t, err)
-	require.EqualError(t, err, sql.ErrNoRows.Error())
-	require.Empty(t, account2)
 
+	// Pastikan error yang didapat adalah sql.ErrNoRows
+	require.Error(t, err)
+	require.ErrorIs(t, err, sql.ErrNoRows)
+	require.Empty(t, account2)
 }
 
 // test list account

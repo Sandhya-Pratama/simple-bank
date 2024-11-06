@@ -16,16 +16,18 @@ const (
 )
 
 var testQueries *sqlc.Queries
+var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
 	// Membuat koneksi pool menggunakan pgxpool
-	conn, err := pgxpool.New(context.Background(), dbSource)
+	var err error
+	testDB, err = pgxpool.New(context.Background(), dbSource)
 	if err != nil {
 		log.Fatal("cannot connect to database:", err)
 	}
-	defer conn.Close() // Menutup koneksi pool setelah testing selesai
+	defer testDB.Close() // Menutup koneksi pool setelah testing selesai
 
-	testQueries = sqlc.New(conn)
+	testQueries = sqlc.New(testDB)
 
 	os.Exit(m.Run())
 }
