@@ -14,3 +14,4 @@ sql:
         emit_prepared_queries: false # Tidak membuat prepared statements
         emit_interface: false # Tidak menghasilkan interface untuk query
         emit_exact_table_names: false # Tidak menggunakan nama tabel persis seperti di database
+        emit_empty_slices: true # Tidak membuat schema jika tabel tidak ditemukan
