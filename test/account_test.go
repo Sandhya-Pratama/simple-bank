@@ -51,21 +51,18 @@ func TestGetAccount(t *testing.T) {
 	require.Equal(t, account1.Balance, account2.Balance)
 	require.Equal(t, account1.Currency, account2.Currency)
 
-	account1CreatedAt, err := account1.CreatedAt.Value()
-	account2CreatedAt, err := account2.CreatedAt.Value()
-	require.NoError(t, err)
-
-	// Langsung menggunakan CreatedAt jika sudah bertipe time.Time
-	require.WithinDuration(t, account1CreatedAt.(time.Time), account2CreatedAt.(time.Time), time.Second)
+	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, time.Second)
 }
 
 // test update account
 func TestUpdateAccount(t *testing.T) {
 	account1 := createRandomAccount(t)
 
+	// Mengupdate balance dengan nilai acak
+	newBalance := util.RandomMoney()
 	arg := sqlc.UpdateAccountParams{
 		ID:      account1.ID,
-		Balance: util.RandomMoney(),
+		Balance: newBalance,
 	}
 
 	account2, err := testQueries.UpdateAccount(context.Background(), arg)
@@ -73,17 +70,13 @@ func TestUpdateAccount(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, account2)
 
+	// Verifikasi bahwa pembaruan balance sesuai
 	require.Equal(t, account1.ID, account2.ID)
 	require.Equal(t, account1.Owner, account2.Owner)
-	require.Equal(t, account1.Balance, account2.Balance)
+	require.Equal(t, newBalance, account2.Balance) // Perbarui baris ini
 	require.Equal(t, account1.Currency, account2.Currency)
 
-	account1CreatedAt, err := account1.CreatedAt.Value()
-	account2CreatedAt, err := account2.CreatedAt.Value()
-	require.NoError(t, err)
-
-	// Langsung menggunakan CreatedAt jika sudah bertipe time.Time
-	require.WithinDuration(t, account1CreatedAt.(time.Time), account2CreatedAt.(time.Time), time.Second)
+	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, time.Second)
 }
 
 // test delete account

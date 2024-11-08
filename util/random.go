@@ -34,12 +34,12 @@ func RandomOwner() string {
 
 // random money generator
 func RandomMoney() int64 {
-	return RandomInt(0, 10000000)
+	return RandomInt(0, 100)
 }
 
 // random currency generator
 func RandomCurrency() string {
-	currencies := []string{"IDR", "RGT", "YEN"}
+	currencies := []string{"IDR", "USD", "EUR"}
 	n := len(currencies)
 
 	return currencies[rand.Intn(n)]

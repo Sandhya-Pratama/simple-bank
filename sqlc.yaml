@@ -9,7 +9,7 @@ sql:
       go:
         package: "sqlc" # Nama package tanpa garis miring
         out: "./db/sqlc" # Direktori keluaran tetap di ./db/sqlc
-        sql_package: "pgx/v5" # SQL driver yang digunakan
+        # sql_package: "pgx/v5" # SQL driver yang digunakan
         emit_json_tags: true # Menambahkan tag JSON ke struct Go
         emit_prepared_queries: false # Tidak membuat prepared statements
         emit_interface: false # Tidak menghasilkan interface untuk query

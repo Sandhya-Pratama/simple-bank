@@ -1,13 +1,13 @@
 package test
 
 import (
-	"context"
+	"database/sql"
 	"log"
 	"os"
 	"testing"
 
 	"github.com/Sandhya-Pratama/simple-bank/db/sqlc"
-	"github.com/jackc/pgx/v5/pgxpool"
+	_ "github.com/lib/pq"
 )
 
 const (
@@ -16,16 +16,17 @@ const (
 )
 
 var testQueries *sqlc.Queries
-var testDB *pgxpool.Pool
+var testDB *sql.DB
 
 func TestMain(m *testing.M) {
-	// Membuat koneksi pool menggunakan pgxpool
 	var err error
-	testDB, err = pgxpool.New(context.Background(), dbSource)
+
+	// Connect ke db
+	testDB, err = sql.Open(dbDriver, dbSource)
+
 	if err != nil {
-		log.Fatal("cannot connect to database:", err)
+		log.Fatal("cannot connect to db:", err)
 	}
-	defer testDB.Close() // Menutup koneksi pool setelah testing selesai
 
 	testQueries = sqlc.New(testDB)
 
