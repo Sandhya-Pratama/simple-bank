@@ -7,22 +7,23 @@ import (
 	"testing"
 
 	"github.com/Sandhya-Pratama/simple-bank/db/sqlc"
+	"github.com/Sandhya-Pratama/simple-bank/util"
 	_ "github.com/lib/pq"
-)
-
-const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://root:mysecretpassword@localhost:5433/simple_bank?sslmode=disable"
 )
 
 var testQueries *sqlc.Queries
 var testDB *sql.DB
 
 func TestMain(m *testing.M) {
-	var err error
+
+	// Load environment variable
+	config, err := util.LoadConfig("../")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
+	}
 
 	// Connect ke db
-	testDB, err = sql.Open(dbDriver, dbSource)
+	testDB, err = sql.Open(config.DBDriver, config.DBSource)
 
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
