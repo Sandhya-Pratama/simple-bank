@@ -1,8 +1,7 @@
-package test
+package testing
 
 import (
 	"context"
-	"database/sql"
 	"testing"
 	"time"
 

@@ -11,11 +11,11 @@ import (
 	"reflect"
 	"testing"
 
+	mockdb "github.com/Sandhya-Pratama/simple-bank/db/mock"
+	db "github.com/Sandhya-Pratama/simple-bank/db/sqlc"
+	"github.com/Sandhya-Pratama/simple-bank/util"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	mockdb "github.com/sandhya-pratama/simplebank/db/mock"
-	db "github.com/sandhya-pratama/simplebank/db/sqlc"
-	"github.com/sandhya-pratama/simplebank/util"
 	"github.com/stretchr/testify/require"
 )
 
@@ -179,7 +179,7 @@ func TestCreateUserAPI(t *testing.T) {
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
-			server := NewServer(store)
+			server := test.NewServerTest(t, store)
 			recorder := httptest.NewRecorder()
 
 			// Marshal body data to JSON
@@ -299,7 +299,7 @@ func TestLoginUserAPI(t *testing.T) {
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
-			server := NewServer(store)
+			server := test.NewTestServer(t, store)
 			recorder := httptest.NewRecorder()
 
 			// Marshal body data to JSON
